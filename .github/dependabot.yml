@@ -1,0 +1,32 @@
+# Dependabot config — aligned with the PMDS sibling repos (Aurelius, Claudius,
+# Flavian, Nerva; structure mirrors Nerva's). The `cooldown` blocks are the
+# Dependabot equivalent of Renovate's `minimumReleaseAge` guard: new releases
+# must age before Dependabot proposes them, which blunts supply-chain attacks
+# that get yanked within days of publish.
+#
+# NOTE: Dependabot alerts require Dependency graph to be enabled in
+# Settings → Security (owner action — see issue #2).
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(deps):"
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    groups:
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci(deps):"
+    cooldown:
+      default-days: 7
