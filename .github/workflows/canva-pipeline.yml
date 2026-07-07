@@ -68,7 +68,8 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install jq
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq jq
+        # jq is preinstalled on GitHub-hosted runners; apt is a flaky fallback only
+        run: command -v jq >/dev/null 2>&1 || (sudo apt-get update -qq && sudo apt-get install -y -qq jq)
 
       # The hard gate: fixture scripts match their goldens, the token set
       # compiles into a valid BuildPlan, and the plan applies cleanly with

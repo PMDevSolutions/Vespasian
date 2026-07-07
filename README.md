@@ -1,5 +1,12 @@
 # Vespasian
 
+[![Release](https://img.shields.io/github/v/release/PMDevSolutions/Vespasian)](https://github.com/PMDevSolutions/Vespasian/releases)
+[![Pipeline tests](https://github.com/PMDevSolutions/Vespasian/actions/workflows/pipeline-tests.yml/badge.svg)](https://github.com/PMDevSolutions/Vespasian/actions/workflows/pipeline-tests.yml)
+[![Security audit](https://github.com/PMDevSolutions/Vespasian/actions/workflows/security-audit.yml/badge.svg)](https://github.com/PMDevSolutions/Vespasian/actions/workflows/security-audit.yml)
+[![Node](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
+[![pnpm](https://img.shields.io/badge/pnpm-9.x-f69220)](https://pnpm.io/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **Claude Code-integrated Wix site builder — design in (Figma · Canva · InDesign), live Wix site out.**
 
 Vespasian converts a design — a Figma URL, a Canva HTML/CSS export, or an InDesign document — into a live **Wix Studio** site. It extracts design tokens with full provenance, compiles a serializable **BuildPlan**, and applies it to a real Wix site: official Wix REST APIs first, the Wix CLI/Git integration for custom CSS and code, and Playwright-driven editor automation only where no API exists. Vespasian is a fork of [Flavian](https://github.com/PMDevSolutions/Flavian) (the same pipeline targeting WordPress), sharing its design-ingestion front end unchanged.
