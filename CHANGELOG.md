@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/PMDevSolutions/Vespasian/compare/v0.2.0...v0.2.1) (2026-07-07)
+
+
+### Fixed
+
+* **deps:** cap cookie override to &lt;1 — cookie@2 requires Node &gt;=22 ([d2edf88](https://github.com/PMDevSolutions/Vespasian/commit/d2edf886ac16876b36fd36863a867c75708b1d06))
+
 ## [0.2.0](https://github.com/PMDevSolutions/Vespasian/compare/v0.1.0...v0.2.0) (2026-07-07)
 
 
