@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read # dorny/paths-filter lists PR files via the API
 
 concurrency:
   group: canva-pipeline-${{ github.ref }}
