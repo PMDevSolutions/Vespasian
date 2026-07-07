@@ -53,7 +53,7 @@
     "gui:package": "pnpm --filter @vespasian/gui package"
   },
   "devDependencies": {
-    "@clack/prompts": "^0.7.0",
+    "@clack/prompts": "^1.6.0",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@lhci/cli": "^0.14.0",
