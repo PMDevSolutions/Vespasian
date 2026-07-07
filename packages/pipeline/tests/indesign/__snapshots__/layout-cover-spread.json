@@ -1,0 +1,77 @@
+[
+  {
+    "items": [
+      {
+        "frame": {
+          "kind": "image",
+          "id": "hero",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 792,
+            "height": 400
+          }
+        },
+        "coverChildren": [
+          {
+            "kind": "text",
+            "id": "headline",
+            "bounds": {
+              "x": 100,
+              "y": 80,
+              "width": 500,
+              "height": 120
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "items": [
+      {
+        "frame": {
+          "kind": "text",
+          "id": "col-left",
+          "bounds": {
+            "x": 40,
+            "y": 460,
+            "width": 340,
+            "height": 300
+          }
+        },
+        "coverChildren": []
+      },
+      {
+        "frame": {
+          "kind": "text",
+          "id": "col-right",
+          "bounds": {
+            "x": 410,
+            "y": 460,
+            "width": 340,
+            "height": 300
+          }
+        },
+        "coverChildren": []
+      }
+    ]
+  },
+  {
+    "items": [
+      {
+        "frame": {
+          "kind": "text",
+          "id": "footer-note",
+          "bounds": {
+            "x": 40,
+            "y": 800,
+            "width": 712,
+            "height": 60
+          }
+        },
+        "coverChildren": []
+      }
+    ]
+  }
+]

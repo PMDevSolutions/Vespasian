@@ -1,0 +1,45 @@
+# Example production deployment configuration (the live Wix site).
+#
+# Copy this file to `production.yml` and fill in real values. The file is then
+# read by `scripts/wix-deployment/publish.sh --env production`.
+
+# Target Wix site GUID (find it via `vespasian site list`).
+site_id: 00000000-0000-0000-0000-000000000000
+
+# Optional: cached metaSiteId used to build dashboard/editor URLs.
+metasite_id: ""
+
+# ─── Credentials (env-var references — never the values) ────────────────────
+account:
+  api_key_env: WIX_API_KEY
+  account_id_env: WIX_ACCOUNT_ID
+
+# ─── Operation channels ──────────────────────────────────────────────────────
+# Production is API-only by default: editor automation against the live site
+# is the highest-risk surface. Add `editor` only deliberately, with a fresh
+# consented session.
+channels:
+  - api
+
+# ─── Publish gate ─────────────────────────────────────────────────────────────
+publish:
+  # Always run pre-publish checks on production.
+  require_checks: true
+  # Require the latest `vespasian qa` FidelityReport to have passed.
+  require_qa_pass: true
+  # Never silently fall back to browser automation on production.
+  allow_editor_fallback: false
+
+# ─── Rollback ────────────────────────────────────────────────────────────────
+# Wix exposes no revision-revert API. `rollback.sh --env production --list`
+# reports what is known about recent publishes; actually reverting is a manual
+# step in the Wix dashboard (Site History). Plan accordingly: the publish gates
+# above are the real safety net.
+
+# ─── Notifications ────────────────────────────────────────────────────────────
+notify:
+  slack_webhook: ""
+  discord_webhook: ""
+  webhook_url: ""
+  email_to: ""
+  email_from: ""

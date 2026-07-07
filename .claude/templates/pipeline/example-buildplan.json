@@ -1,0 +1,95 @@
+{
+  "planVersion": 1,
+  "site": {
+    "title": "Example Site",
+    "templateId": "studio-template-allowlisted-id"
+  },
+  "steps": [
+    {
+      "id": "provision-create-site",
+      "op": "site.create",
+      "method": "api",
+      "phase": "provision",
+      "input": { "name": "Example Site", "templateId": "studio-template-allowlisted-id" },
+      "idempotencyKey": "provision:example-site",
+      "onFail": "retry"
+    },
+    {
+      "id": "provision-assert-studio",
+      "op": "site.assertStudio",
+      "method": "api",
+      "phase": "provision",
+      "input": {},
+      "idempotencyKey": "provision:assert-studio",
+      "verify": { "assert": "editorType", "equals": "WIX_STUDIO" },
+      "onFail": "escalate"
+    },
+    {
+      "id": "upload-hero-image",
+      "op": "media.upload",
+      "method": "api",
+      "phase": "media",
+      "input": {
+        "slug": "hero-group-photo",
+        "fileName": "hero-group-photo.jpg",
+        "mimeType": "image/jpeg",
+        "path": "assets/hero-group-photo.jpg"
+      },
+      "idempotencyKey": "media:hero-group-photo",
+      "verify": { "assert": "file-ready" },
+      "onFail": "retry"
+    },
+    {
+      "id": "editor-page-home",
+      "op": "editor.addPage",
+      "method": "playwright",
+      "phase": "editor",
+      "input": { "name": "Home" },
+      "idempotencyKey": "page:home",
+      "onFail": "escalate"
+    },
+    {
+      "id": "editor-section-home-hero",
+      "op": "editor.addSection",
+      "method": "agent",
+      "phase": "editor",
+      "input": {
+        "page": "Home",
+        "index": 0,
+        "name": "hero",
+        "styleHints": {
+          "blocks": [
+            { "type": "text", "text": "Welcome", "themeSlot": "h1" },
+            { "type": "image", "assetSlug": "hero-group-photo" },
+            { "type": "button", "text": "Get Started", "href": "/contact" }
+          ]
+        }
+      },
+      "idempotencyKey": "compose:home:hero",
+      "onFail": "skip-and-report"
+    },
+    {
+      "id": "code-global-css",
+      "op": "cli.writeGlobalCss",
+      "method": "cli",
+      "phase": "code",
+      "input": { "css": ":root {\n\t--vsp-space-40: 2rem;\n}\n" },
+      "idempotencyKey": "code:global-css",
+      "onFail": "retry"
+    },
+    {
+      "id": "publish-site",
+      "op": "site.publish",
+      "method": "api",
+      "phase": "publish",
+      "input": {},
+      "idempotencyKey": "publish:example-site",
+      "verify": { "assert": "published-url-reachable" },
+      "onFail": "retry"
+    }
+  ],
+  "fidelity": [],
+  "meta": {
+    "sourceHash": "0000000000000000000000000000000000000000"
+  }
+}

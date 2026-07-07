@@ -1,0 +1,15 @@
+{
+  "$comment": "Page/breakpoint matrix for the visual regression suite. Paths are relative to the published Wix site; the base URL comes from the WIX_SITE_URL env var (capture.mjs) and the baseUrl field here is only a fallback. Slug is the filename prefix for captured PNGs. Breakpoints follow Wix Studio: mobile 320-750 / tablet 751-1000 / desktop 1001+.",
+  "baseUrl": null,
+  "breakpoints": {
+    "mobile": 375,
+    "tablet": 768,
+    "desktop": 1440,
+    "wide": 1920
+  },
+  "pages": [
+    { "slug": "home",  "path": "/" },
+    { "slug": "about", "path": "/about" },
+    { "slug": "404",   "path": "/__definitely-not-a-real-page__" }
+  ]
+}

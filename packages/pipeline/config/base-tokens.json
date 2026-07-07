@@ -1,0 +1,34 @@
+{
+	"version": 1,
+	"description": "Vespasian's bundled neutral base token set. Design-derived tokens merge into these groups by slug; derived slugs are namespaced so they never clobber this curated baseline.",
+	"palette": [
+		{ "slug": "base", "color": "#ffffff", "name": "Base" },
+		{ "slug": "contrast", "color": "#111827", "name": "Contrast" },
+		{ "slug": "primary", "color": "#2563eb", "name": "Primary" },
+		{ "slug": "secondary", "color": "#6b7280", "name": "Secondary" },
+		{ "slug": "tertiary", "color": "#f3f4f6", "name": "Tertiary" }
+	],
+	"fontFamilies": [
+		{ "slug": "sans", "name": "Sans", "fontFamily": "system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" },
+		{ "slug": "serif", "name": "Serif", "fontFamily": "Georgia, 'Times New Roman', serif" },
+		{ "slug": "mono", "name": "Mono", "fontFamily": "ui-monospace, SFMono-Regular, Menlo, monospace" }
+	],
+	"fontSizes": [
+		{ "slug": "small", "size": "0.875rem", "name": "Small" },
+		{ "slug": "medium", "size": "1rem", "name": "Medium" },
+		{ "slug": "large", "size": "1.25rem", "name": "Large" },
+		{ "slug": "x-large", "size": "1.5rem", "name": "Extra Large" },
+		{ "slug": "xx-large", "size": "2.25rem", "name": "Extra Extra Large" },
+		{ "slug": "display", "size": "3rem", "name": "Display" }
+	],
+	"spacingSizes": [
+		{ "slug": "space-10", "size": "0.5rem", "name": "Space 10" },
+		{ "slug": "space-20", "size": "1rem", "name": "Space 20" },
+		{ "slug": "space-30", "size": "1.5rem", "name": "Space 30" },
+		{ "slug": "space-40", "size": "2rem", "name": "Space 40" },
+		{ "slug": "space-50", "size": "3rem", "name": "Space 50" },
+		{ "slug": "space-60", "size": "4rem", "name": "Space 60" },
+		{ "slug": "space-70", "size": "6rem", "name": "Space 70" },
+		{ "slug": "space-80", "size": "8rem", "name": "Space 80" }
+	]
+}

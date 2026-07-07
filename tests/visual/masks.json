@@ -1,0 +1,11 @@
+{
+  "$comment": "Per-URL list of CSS selectors that Playwright will mask (overlay with a solid color) before screenshotting. The '*' key applies to every URL. Wix-rendered DOM uses generated class names, so prefer data-hook / data-testid / semantic selectors. Add new selectors here when a screenshot diff is caused by deterministic-but-time-sensitive content rather than a real UI change.",
+  "*": [
+    "time",
+    "[datetime]",
+    "[data-hook='current-date']",
+    "video",
+    "iframe[src*='youtube']",
+    "iframe[src*='vimeo']"
+  ]
+}

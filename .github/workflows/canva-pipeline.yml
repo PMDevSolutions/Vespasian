@@ -1,0 +1,100 @@
+name: canva-pipeline
+
+# Integration test for the Canva-to-Wix pipeline. Runs the deterministic
+# canva-wix helper scripts against a committed fixture (with goldens), then
+# compiles the extracted tokens/content into a BuildPlan and executes it with
+# dry-run recording transports — zero Wix credentials, zero network, zero
+# browsers. Editor-plane steps surface as pending-agent entries by design.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read # dorny/paths-filter lists PR files via the API
+
+concurrency:
+  group: canva-pipeline-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-paths:
+    runs-on: ubuntu-latest
+    outputs:
+      should-run: ${{ steps.filter.outputs.canva }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            canva:
+              - 'scripts/canva-wix/**'
+              - 'scripts/shared/**'
+              - 'tests/fixtures/canva/**'
+              - 'tests/canva-e2e/**'
+              - 'packages/wix-driver/**'
+              - '.github/workflows/canva-pipeline.yml'
+
+  e2e:
+    needs: check-paths
+    if: needs.check-paths.outputs.should-run == 'true'
+    runs-on: ubuntu-latest
+    name: Fixture conversion + plan compile + dry-run apply
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # pnpm via Corepack — pnpm/action-setup isn't on the allowed-actions list.
+      - name: Enable Corepack (pnpm)
+        run: corepack enable
+
+      - name: Restore pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+
+      - name: Install Node deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Install jq
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq jq
+
+      # The hard gate: fixture scripts match their goldens, the token set
+      # compiles into a valid BuildPlan, and the plan applies cleanly with
+      # dry-run transports. Fails the PR on regression.
+      - name: Run Canva-to-Wix integration test
+        env:
+          VESPASIAN_DRY_RUN: "1"
+        run: pnpm test:canva-e2e
+
+  # Stable required check: always runs so branch protection can require
+  # "canva-pipeline status" without blocking PRs that don't touch Canva paths
+  # (mirrors pipeline-tests.yml's test-status job).
+  status:
+    runs-on: ubuntu-latest
+    needs: [check-paths, e2e]
+    if: always()
+    name: canva-pipeline status
+    steps:
+      - name: Report status
+        run: |
+          if [ "${{ needs.check-paths.outputs.should-run }}" != "true" ]; then
+            echo "No Canva pipeline/fixture/test changes — skipping e2e."
+            exit 0
+          fi
+          if [ "${{ needs.e2e.result }}" != "success" ]; then
+            echo "canva-pipeline integration test failed."
+            exit 1
+          fi
+          echo "canva-pipeline integration test passed."

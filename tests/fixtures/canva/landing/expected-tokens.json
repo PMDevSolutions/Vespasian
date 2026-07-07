@@ -1,0 +1,25 @@
+{
+  "palette": [
+  { "slug": "color-1", "color": "#1d1d1f", "name": "Color 1" },
+  { "slug": "color-2", "color": "#1f6feb", "name": "Color 2" },
+  { "slug": "color-3", "color": "#e8491d", "name": "Color 3" },
+  { "slug": "color-4", "color": "#ffffff", "name": "Color 4" }
+],
+  "fontFamilies": [
+  { "slug": "inter", "fontFamily": "Inter", "name": "Inter" },
+  { "slug": "playfair-display", "fontFamily": "Playfair Display", "name": "Playfair Display" }
+],
+  "fontSizes": [
+  { "slug": "base", "size": "16px", "name": "base" },
+  { "slug": "medium", "size": "18px", "name": "medium" },
+  { "slug": "x-large", "size": "32px", "name": "x-large" },
+  { "slug": "xx-large", "size": "48px", "name": "xx-large" }
+],
+  "spacingSizes": [
+  { "slug": "40", "size": "12px", "name": "Space 40" },
+  { "slug": "40", "size": "16px", "name": "Space 40" },
+  { "slug": "50", "size": "24px", "name": "Space 50" },
+  { "slug": "60", "size": "32px", "name": "Space 60" },
+  { "slug": "70", "size": "48px", "name": "Space 70" }
+]
+}

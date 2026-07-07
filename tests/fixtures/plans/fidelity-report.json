@@ -1,0 +1,39 @@
+{
+	"summary": {
+		"total": 1,
+		"errors": 0,
+		"warnings": 0,
+		"info": 1,
+		"pendingAgentSteps": 2
+	},
+	"notes": [
+		{
+			"code": "spacing-css-only",
+			"severity": "info",
+			"message": "Spacing scale lives in global.css custom properties (Wix has no spacing tokens)."
+		}
+	],
+	"pendingAgent": [
+		{
+			"stepId": "editor-1",
+			"op": "pages.create",
+			"phase": "editor",
+			"method": "playwright",
+			"input": {
+				"title": "Home"
+			},
+			"hint": "No editor driver attached — hand \"pages.create\" to the wix-site-builder agent (input in the BuildPlan step)."
+		},
+		{
+			"stepId": "editor-2",
+			"op": "canvas.composeSection",
+			"phase": "editor",
+			"method": "agent",
+			"input": {
+				"page": "Home",
+				"section": "hero"
+			},
+			"hint": "No editor driver attached — hand \"canvas.composeSection\" to the wix-site-builder agent (input in the BuildPlan step)."
+		}
+	]
+}

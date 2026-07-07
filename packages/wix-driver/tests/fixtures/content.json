@@ -1,0 +1,36 @@
+{
+	"pages": [
+		{
+			"title": "Home",
+			"seo": { "title": "Home — Fixture", "description": "Fixture home page" },
+			"sections": [
+				{
+					"name": "hero",
+					"blocks": [
+						{ "type": "text", "text": "Welcome", "style": { "themeSlot": "h1" } },
+						{ "type": "image", "assetSlug": "hero-image", "bounds": { "x": 0, "y": 0, "width": 1200, "height": 600 } },
+						{ "type": "button", "text": "Get started", "href": "/contact" }
+					]
+				},
+				{
+					"name": "about",
+					"blocks": [{ "type": "text", "text": "About us." }]
+				}
+			]
+		},
+		{
+			"title": "Contact",
+			"sections": [{ "name": "form", "blocks": [{ "type": "text", "text": "Say hello." }] }]
+		}
+	],
+	"collections": [
+		{
+			"id": "testimonials",
+			"fields": [
+				{ "key": "quote", "type": "TEXT" },
+				{ "key": "author", "type": "TEXT" }
+			],
+			"items": [{ "quote": "Great!", "author": "Ada" }]
+		}
+	]
+}

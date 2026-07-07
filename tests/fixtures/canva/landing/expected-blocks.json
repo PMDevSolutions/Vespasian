@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "source": "canva",
+  "blocks": [
+    {
+      "type": "section",
+      "boundary": "start"
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Welcome to Acme"
+    },
+    {
+      "type": "paragraph",
+      "text": "We build delightful things for delightful people."
+    },
+    {
+      "type": "image",
+      "src": "images/hero.jpg",
+      "alt": "Acme team at work"
+    },
+    {
+      "type": "button",
+      "href": "#contact",
+      "text": "Get started"
+    },
+    {
+      "type": "section",
+      "boundary": "end"
+    },
+    {
+      "type": "section",
+      "boundary": "start"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "What we offer"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        "Fast delivery",
+        "Friendly support",
+        "Fair pricing"
+      ]
+    },
+    {
+      "type": "section",
+      "boundary": "end"
+    },
+    {
+      "type": "section",
+      "boundary": "start"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "About us"
+    },
+    {
+      "type": "paragraph",
+      "text": "Founded in 2020, Acme has shipped hundreds of projects."
+    },
+    {
+      "type": "section",
+      "boundary": "end"
+    }
+  ]
+}

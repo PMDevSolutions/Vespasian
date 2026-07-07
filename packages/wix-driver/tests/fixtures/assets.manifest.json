@@ -1,0 +1,5 @@
+{
+	"assets": [
+		{ "slug": "hero-image", "path": "assets/hero.png", "mimeType": "image/png", "fileName": "hero.png" }
+	]
+}

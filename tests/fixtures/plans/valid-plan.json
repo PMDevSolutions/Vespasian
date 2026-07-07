@@ -1,0 +1,83 @@
+{
+	"planVersion": 1,
+	"site": {
+		"title": "Fixture Site",
+		"templateId": "11111111-2222-3333-4444-555555555555"
+	},
+	"steps": [
+		{
+			"id": "provision-1",
+			"op": "site.create",
+			"method": "api",
+			"phase": "provision",
+			"input": { "title": "Fixture Site" },
+			"idempotencyKey": "site.create:fixture",
+			"verify": { "assert": "state.siteId" },
+			"onFail": "retry"
+		},
+		{
+			"id": "provision-2",
+			"op": "site.assertStudio",
+			"method": "api",
+			"phase": "provision",
+			"input": {},
+			"idempotencyKey": "site.assertStudio:fixture",
+			"onFail": "retry"
+		},
+		{
+			"id": "media-1",
+			"op": "media.upload",
+			"method": "api",
+			"phase": "media",
+			"input": { "slug": "hero", "fileName": "hero.jpg", "mimeType": "image/jpeg" },
+			"idempotencyKey": "media.upload:hero",
+			"onFail": "retry"
+		},
+		{
+			"id": "editor-1",
+			"op": "pages.create",
+			"method": "playwright",
+			"phase": "editor",
+			"input": { "title": "Home" },
+			"idempotencyKey": "pages.create:home",
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-2",
+			"op": "canvas.composeSection",
+			"method": "agent",
+			"phase": "editor",
+			"input": { "page": "Home", "section": "hero" },
+			"idempotencyKey": "canvas.composeSection:home-hero",
+			"onFail": "escalate"
+		},
+		{
+			"id": "code-1",
+			"op": "cli.writeGlobalCss",
+			"method": "cli",
+			"phase": "code",
+			"input": { "css": ":root {\n  --vsp-space-40: 16px;\n  --vsp-space-50: 24px;\n}\n" },
+			"idempotencyKey": "cli.writeGlobalCss:global",
+			"onFail": "retry"
+		},
+		{
+			"id": "publish-1",
+			"op": "site.publish",
+			"method": "api",
+			"phase": "publish",
+			"input": {},
+			"idempotencyKey": "site.publish:fixture",
+			"onFail": "retry"
+		}
+	],
+	"fidelity": [
+		{
+			"code": "spacing-css-only",
+			"severity": "info",
+			"message": "Spacing scale lives in global.css custom properties (Wix has no spacing tokens)."
+		}
+	],
+	"meta": {
+		"sourceHash": "fixture-0000000000000000"
+	}
+}

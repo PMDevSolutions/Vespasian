@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "figma-desktop": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp",
+      "description": "Figma desktop app MCP server (local) - requires Figma desktop with Dev Mode enabled"
+    },
+    "figma": {
+      "type": "http",
+      "url": "https://mcp.figma.com/mcp",
+      "description": "Figma remote MCP server (fallback)"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "--headless"],
+      "description": "Playwright browser automation - QA screenshots and the Wix editor fallback plane. For editor automation prefer headed + persistent session: add --storage-state .vespasian/session/state.json and drop --headless (see .claude/skills/wix-playwright-driver/)"
+    }
+  }
+}

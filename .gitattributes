@@ -1,0 +1,30 @@
+# Normalize line endings. Text is stored as LF in the repository so shell
+# scripts and Node tooling behave identically on Windows checkouts and
+# Linux/CI runners (bats tests execute .sh files directly).
+* text=auto
+
+# Files that must always be LF (executed or parsed on Linux/CI).
+*.sh    text eol=lf
+*.mjs   text eol=lf
+*.js    text eol=lf
+
+# Windows-only scripts keep CRLF.
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+
+# Binary assets — never normalize or diff as text.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.svg   text eol=lf
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.eot   binary
+*.pdf   binary
+*.zip   binary
+*.idml  binary

@@ -1,0 +1,71 @@
+{
+  "name": "vespasian",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Claude Code-integrated Wix site builder — design in (Figma · Canva · InDesign), live Wix site out. The repository version is tracked in git tags + .release-please-manifest.json (source of truth) and mirrored into the version field above by release-please.",
+  "license": "MIT",
+  "homepage": "https://github.com/PMDevSolutions/Vespasian",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PMDevSolutions/Vespasian.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PMDevSolutions/Vespasian/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "type": "module",
+  "bin": {
+    "vespasian": "./bin/vespasian.mjs"
+  },
+  "scripts": {
+    "vespasian": "node bin/vespasian.mjs",
+    "plan": "node bin/vespasian.mjs plan",
+    "apply": "node bin/vespasian.mjs apply",
+    "init": "node scripts/init.mjs",
+    "test:init": "node --test \"tests/init/**/*.test.mjs\"",
+    "test:pipeline": "pnpm --filter @vespasian/pipeline test",
+    "test:wix-driver": "pnpm --filter @vespasian/wix-driver test",
+    "test:all": "pnpm test:init && pnpm test:pipeline && pnpm test:wix-driver",
+    "pipeline:ingest": "node packages/pipeline/bin/ingest.mjs",
+    "pipeline:stage-assets": "node packages/pipeline/bin/stage-assets.mjs",
+    "test:canva-e2e": "node --test tests/canva-e2e/*.test.mjs",
+    "visual:capture": "node tests/visual/capture.mjs",
+    "visual:diff": "node scripts/visual-diff.js --batch tests/visual/actual tests/visual/baselines --output-dir tests/visual/diffs --threshold 0.005 --json > tests/visual/report.json && node tests/visual/print-report.mjs tests/visual/report.json",
+    "visual:update": "bash scripts/visual-update-baselines.sh",
+    "visual:seed": "bash tests/visual/seed.sh",
+    "lighthouse:run": "lhci autorun --config=./lighthouserc.json",
+    "lighthouse:collect": "lhci collect --config=./lighthouserc.json",
+    "lighthouse:assert": "lhci assert --config=./lighthouserc.json",
+    "lighthouse:open": "lhci open",
+    "lint:commits": "commitlint --from=$(git merge-base origin/main HEAD) --to=HEAD",
+    "lint:commits:last": "commitlint --from=HEAD~1 --to=HEAD",
+    "test:visual": "pnpm visual:diff",
+    "test:lighthouse": "pnpm lighthouse:run",
+    "playwright:install": "playwright install --with-deps chromium",
+    "gui:dev": "pnpm --filter @vespasian/gui dev",
+    "gui:build": "pnpm --filter @vespasian/gui build",
+    "gui:test": "pnpm --filter @vespasian/gui test",
+    "gui:lint": "pnpm --filter @vespasian/gui lint",
+    "gui:typecheck": "pnpm --filter @vespasian/gui typecheck",
+    "gui:package": "pnpm --filter @vespasian/gui package"
+  },
+  "devDependencies": {
+    "@clack/prompts": "^0.7.0",
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "@lhci/cli": "^0.14.0",
+    "pixelmatch": "^7.1.0",
+    "playwright": "1.60.0",
+    "pngjs": "^7.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "tmp": ">=0.2.6",
+      "uuid": ">=11.1.1",
+      "cookie": ">=0.7.0"
+    }
+  }
+}
