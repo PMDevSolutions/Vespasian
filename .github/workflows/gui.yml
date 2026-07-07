@@ -38,9 +38,14 @@ jobs:
       - name: Install dependencies
         # Skip the ~100 MB Electron binary download — typecheck needs only the
         # bundled types and the core tests never launch Electron.
+        # side-effects-cache=false: pnpm would otherwise record this *skipped*
+        # Electron postinstall in the pnpm store (which setup-node caches, keyed
+        # on the lockfile — shared with the smoke job), and any later install
+        # restoring that cache would replay it and never get a binary
+        # ("Electron failed to install correctly").
         env:
           ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --config.side-effects-cache=false
 
       - name: Lint
         run: pnpm --filter @vespasian/gui lint
@@ -68,7 +73,12 @@ jobs:
 
       - name: Install dependencies
         # No ELECTRON_SKIP here — the smoke needs the real Electron binary.
-        run: pnpm install --frozen-lockfile
+        # side-effects-cache=false: don't replay postinstall results from the
+        # restored store cache — an install that ran with
+        # ELECTRON_SKIP_BINARY_DOWNLOAD=1 records a binary-less Electron build,
+        # and replaying it here is what breaks electron.launch. This forces
+        # Electron's postinstall to really run (and really download).
+        run: pnpm install --frozen-lockfile --config.side-effects-cache=false
 
       - name: Install Electron runtime libraries + Xvfb
         run: |
