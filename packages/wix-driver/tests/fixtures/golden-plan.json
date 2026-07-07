@@ -1,0 +1,519 @@
+{
+	"planVersion": 1,
+	"site": {
+		"title": "Home",
+		"templateId": "tpl-studio-1"
+	},
+	"steps": [
+		{
+			"id": "provision-create-site",
+			"op": "site.create",
+			"method": "api",
+			"phase": "provision",
+			"input": {
+				"name": "Home",
+				"templateId": "tpl-studio-1"
+			},
+			"idempotencyKey": "d8e754b259f6a22d",
+			"onFail": "retry"
+		},
+		{
+			"id": "provision-assert-studio",
+			"op": "site.assertStudio",
+			"method": "api",
+			"phase": "provision",
+			"input": {},
+			"idempotencyKey": "d64d552e1f79a4ba",
+			"verify": {
+				"assert": "editorType",
+				"equals": "WIX_STUDIO"
+			},
+			"onFail": "escalate"
+		},
+		{
+			"id": "media-upload-hero-image",
+			"op": "media.upload",
+			"method": "api",
+			"phase": "media",
+			"input": {
+				"slug": "hero-image",
+				"mimeType": "image/png",
+				"fileName": "hero.png",
+				"path": "assets/hero.png"
+			},
+			"idempotencyKey": "349f54de9674453e",
+			"verify": {
+				"assert": "file-ready"
+			},
+			"onFail": "retry"
+		},
+		{
+			"id": "data-collection-testimonials",
+			"op": "data.createCollection",
+			"method": "api",
+			"phase": "data",
+			"input": {
+				"collection": {
+					"id": "testimonials",
+					"fields": [
+						{
+							"key": "quote",
+							"type": "TEXT"
+						},
+						{
+							"key": "author",
+							"type": "TEXT"
+						}
+					]
+				}
+			},
+			"idempotencyKey": "6d229bc4fd37d23a",
+			"onFail": "retry"
+		},
+		{
+			"id": "data-items-testimonials",
+			"op": "data.bulkInsertItems",
+			"method": "api",
+			"phase": "data",
+			"input": {
+				"dataCollectionId": "testimonials",
+				"dataItems": [
+					{
+						"data": {
+							"quote": "Great!",
+							"author": "Ada"
+						}
+					}
+				]
+			},
+			"idempotencyKey": "c1b359dada5ab947",
+			"onFail": "retry"
+		},
+		{
+			"id": "editor-theme-colors",
+			"op": "editor.applyThemeColors",
+			"method": "playwright",
+			"phase": "editor",
+			"input": {
+				"roles": {
+					"primary-background": {
+						"slug": "paper",
+						"value": "#FAF8F5"
+					},
+					"primary-text": {
+						"slug": "ink",
+						"value": "#1A1A2E"
+					},
+					"links-actions": {
+						"slug": "coral",
+						"value": "#FF6B6B"
+					},
+					"secondary-text": {
+						"slug": "slate",
+						"value": "#5C6B73"
+					},
+					"secondary-background": {
+						"slug": "sage",
+						"value": "#8FA998"
+					},
+					"disabled": {
+						"slug": "vsp-synth-disabled",
+						"value": "#CCCCCC",
+						"synthesized": true
+					}
+				},
+				"siteColors": [
+					{
+						"slug": "paper",
+						"name": "Paper",
+						"value": "#FAF8F5"
+					},
+					{
+						"slug": "sage",
+						"name": "Sage",
+						"value": "#8FA998"
+					},
+					{
+						"slug": "slate",
+						"name": "Slate",
+						"value": "#5C6B73"
+					},
+					{
+						"slug": "ink",
+						"name": "Ink",
+						"value": "#1A1A2E"
+					},
+					{
+						"slug": "coral",
+						"name": "Coral",
+						"value": "#FF6B6B"
+					}
+				],
+				"truncated": []
+			},
+			"idempotencyKey": "d44b0127c01f0732",
+			"verify": {
+				"assert": "wst-color-vars"
+			},
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-theme-typography",
+			"op": "editor.applyThemeTypography",
+			"method": "playwright",
+			"phase": "editor",
+			"input": {
+				"slots": {
+					"h1": {
+						"fontSize": "56px",
+						"sourceSlug": "xxl",
+						"name": "XXL",
+						"fontFamily": "Playfair Display"
+					},
+					"h2": {
+						"fontSize": "40px",
+						"sourceSlug": "xl",
+						"name": "XL",
+						"fontFamily": "Playfair Display"
+					},
+					"h3": {
+						"fontSize": "28px",
+						"sourceSlug": "lg",
+						"name": "Large",
+						"fontFamily": "Playfair Display"
+					},
+					"h4": {
+						"fontSize": "20px",
+						"sourceSlug": "md",
+						"name": "Medium",
+						"fontFamily": "Playfair Display"
+					},
+					"h5": {
+						"fontSize": "17px",
+						"sourceSlug": "base",
+						"name": "Base",
+						"fontFamily": "Playfair Display"
+					},
+					"h6": {
+						"fontSize": "14px",
+						"sourceSlug": "sm",
+						"name": "Small",
+						"fontFamily": "Playfair Display"
+					}
+				},
+				"fonts": [
+					{
+						"slug": "heading",
+						"family": "Playfair Display",
+						"stack": "'Playfair Display', serif",
+						"match": {
+							"type": "builtin",
+							"name": "Playfair Display",
+							"bestEffort": true
+						}
+					},
+					{
+						"slug": "body",
+						"family": "Atlas Grotesk",
+						"stack": "'Atlas Grotesk', sans-serif",
+						"match": {
+							"type": "upload",
+							"bestEffort": true,
+							"plan": {
+								"fileHints": [
+									"atlas-grotesk.woff2",
+									"atlas-grotesk.woff"
+								],
+								"preferredFormat": "woff2",
+								"maxBytes": 4194304,
+								"dialog": "editor Upload Fonts (no API)"
+							}
+						}
+					}
+				]
+			},
+			"idempotencyKey": "79ef7979ee8a92f7",
+			"verify": {
+				"assert": "wst-font-vars"
+			},
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-section-1-hero",
+			"op": "editor.addSection",
+			"method": "agent",
+			"phase": "editor",
+			"input": {
+				"page": "Home",
+				"index": 0,
+				"name": "hero",
+				"styleHints": {}
+			},
+			"idempotencyKey": "5a7870a9bf97abec",
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-text-1-hero-b1",
+			"op": "editor.addText",
+			"method": "agent",
+			"phase": "editor",
+			"input": {
+				"page": "Home",
+				"section": "hero",
+				"text": "Welcome",
+				"themeSlot": "h1",
+				"bounds": null,
+				"styleHints": {
+					"themeSlot": "h1"
+				}
+			},
+			"idempotencyKey": "c9c67b3a7a605d1c",
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-image-1-hero-b2",
+			"op": "editor.addImage",
+			"method": "agent",
+			"phase": "editor",
+			"input": {
+				"page": "Home",
+				"section": "hero",
+				"assetSlug": "hero-image",
+				"bounds": {
+					"x": 0,
+					"y": 0,
+					"width": 1200,
+					"height": 600
+				},
+				"styleHints": {}
+			},
+			"idempotencyKey": "f2e586b1e20a4215",
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-button-1-hero-b3",
+			"op": "editor.addButton",
+			"method": "agent",
+			"phase": "editor",
+			"input": {
+				"page": "Home",
+				"section": "hero",
+				"text": "Get started",
+				"href": "/contact",
+				"bounds": null,
+				"styleHints": {}
+			},
+			"idempotencyKey": "b5d6d4f08cd63c73",
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-section-1-about",
+			"op": "editor.addSection",
+			"method": "agent",
+			"phase": "editor",
+			"input": {
+				"page": "Home",
+				"index": 1,
+				"name": "about",
+				"styleHints": {}
+			},
+			"idempotencyKey": "3ef5851a95dff63a",
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-text-1-about-b1",
+			"op": "editor.addText",
+			"method": "agent",
+			"phase": "editor",
+			"input": {
+				"page": "Home",
+				"section": "about",
+				"text": "About us.",
+				"themeSlot": null,
+				"bounds": null,
+				"styleHints": {}
+			},
+			"idempotencyKey": "79fa37c10aac2b0c",
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-seo-1",
+			"op": "editor.setPageSeo",
+			"method": "playwright",
+			"phase": "editor",
+			"input": {
+				"pageName": "Home",
+				"title": "Home — Fixture",
+				"description": "Fixture home page"
+			},
+			"idempotencyKey": "e6aad51c090dddb4",
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-page-2",
+			"op": "editor.addPage",
+			"method": "playwright",
+			"phase": "editor",
+			"input": {
+				"name": "Contact"
+			},
+			"idempotencyKey": "f429d3603647c316",
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-section-2-form",
+			"op": "editor.addSection",
+			"method": "agent",
+			"phase": "editor",
+			"input": {
+				"page": "Contact",
+				"index": 0,
+				"name": "form",
+				"styleHints": {}
+			},
+			"idempotencyKey": "d619591819e89c81",
+			"onFail": "escalate"
+		},
+		{
+			"id": "editor-text-2-form-b1",
+			"op": "editor.addText",
+			"method": "agent",
+			"phase": "editor",
+			"input": {
+				"page": "Contact",
+				"section": "form",
+				"text": "Say hello.",
+				"themeSlot": null,
+				"bounds": null,
+				"styleHints": {}
+			},
+			"idempotencyKey": "c797537f04b95b8c",
+			"onFail": "escalate"
+		},
+		{
+			"id": "code-global-css",
+			"op": "cli.writeGlobalCss",
+			"method": "cli",
+			"phase": "code",
+			"input": {
+				"css": "/*\n * global.css — generated by @vespasian/wix-driver. DO NOT HAND-EDIT.\n * Wix Studio custom CSS (src/styles/global.css via Git integration).\n * Theme panels remain the source of truth for colors/text slots; this file\n * carries the spacing scale, overflow type styles, and token variables.\n */\n\n/* Design-token color variables (reinforcement; panels set the real theme). */\n:root {\n\t--vsp-color-ink: #1A1A2E;\n\t--vsp-color-paper: #FAF8F5;\n\t--vsp-color-coral: #FF6B6B;\n\t--vsp-color-sage: #8FA998;\n\t--vsp-color-slate: #5C6B73;\n}\n\n/* Spacing scale — Wix has no spacing tokens; this is their only home. */\n:root {\n\t--vsp-space-10: 0.5rem;\n\t--vsp-space-20: 1rem;\n\t--vsp-space-40: 2rem;\n\t--vsp-space-80: 4rem;\n}\n\n.vsp-p-10 { padding: var(--vsp-space-10); }\n.vsp-m-10 { margin: var(--vsp-space-10); }\n.vsp-p-20 { padding: var(--vsp-space-20); }\n.vsp-m-20 { margin: var(--vsp-space-20); }\n.vsp-p-40 { padding: var(--vsp-space-40); }\n.vsp-m-40 { margin: var(--vsp-space-40); }\n.vsp-p-80 { padding: var(--vsp-space-80); }\n.vsp-m-80 { margin: var(--vsp-space-80); }\n"
+			},
+			"idempotencyKey": "fa68838418640354",
+			"onFail": "retry"
+		},
+		{
+			"id": "properties-business-profile",
+			"op": "properties.updateBusinessProfile",
+			"method": "api",
+			"phase": "properties",
+			"input": {
+				"profile": {
+					"siteDisplayName": "Home"
+				}
+			},
+			"idempotencyKey": "2a6b609148357b14",
+			"onFail": "retry"
+		},
+		{
+			"id": "publish-site",
+			"op": "site.publish",
+			"method": "api",
+			"phase": "publish",
+			"input": {},
+			"idempotencyKey": "b7e2080f703e4404",
+			"verify": {
+				"assert": "published-url-reachable"
+			},
+			"onFail": "retry"
+		},
+		{
+			"id": "qa-capture",
+			"op": "qa.capture",
+			"method": "playwright",
+			"phase": "qa",
+			"input": {
+				"widths": [
+					1280,
+					900,
+					375
+				]
+			},
+			"idempotencyKey": "c171ef19c8fe61f8",
+			"onFail": "skip-and-report"
+		},
+		{
+			"id": "qa-assert-theme",
+			"op": "qa.assertTheme",
+			"method": "playwright",
+			"phase": "qa",
+			"input": {
+				"expectVars": [
+					{
+						"approx": "#FAF8F5"
+					},
+					{
+						"approx": "#8FA998"
+					},
+					{
+						"approx": "#5C6B73"
+					},
+					{
+						"approx": "#1A1A2E"
+					},
+					{
+						"approx": "#FF6B6B"
+					}
+				]
+			},
+			"idempotencyKey": "3fae2197b11a30c7",
+			"onFail": "skip-and-report"
+		}
+	],
+	"fidelity": [
+		{
+			"code": "palette.synthesized-role",
+			"severity": "info",
+			"message": "No palette color left for the \"disabled\" role — synthesized #CCCCCC.",
+			"context": {
+				"role": "disabled"
+			}
+		},
+		{
+			"code": "fonts.upload-required",
+			"severity": "warn",
+			"message": "Font family \"Atlas Grotesk\" not matched against the bundled Wix built-in list (best-effort) — an upload plan was generated. Upload atlas-grotesk.woff2 (< 4 MB) via the editor's Upload Fonts dialog; exact versions/subsets and variable-font axes are lost.",
+			"context": {
+				"slug": "body",
+				"family": "Atlas Grotesk"
+			}
+		},
+		{
+			"code": "typography.partial-ramp",
+			"severity": "info",
+			"message": "Only 6 font size(s) extracted — text-theme slots p1, p2, p3 keep the template's values.",
+			"context": {
+				"unset": [
+					"p1",
+					"p2",
+					"p3"
+				]
+			}
+		},
+		{
+			"code": "spacing.css-only",
+			"severity": "info",
+			"message": "Wix has no spacing tokens — the 4-step scale lives only in global.css (--vsp-space-*, .vsp-p-*/.vsp-m-* utilities, Studio-only). The site owner sees no editable spacing system in the editor.",
+			"context": {
+				"slugs": [
+					"10",
+					"20",
+					"40",
+					"80"
+				]
+			}
+		}
+	],
+	"meta": {
+		"sourceHash": "da3a5e2dc4dfe1223f8821900ec92ec043f5dce6975cdd7478b3a67f6d1b0c08"
+	}
+}

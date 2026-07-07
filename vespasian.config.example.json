@@ -1,0 +1,12 @@
+{
+  "pipeline": {
+    "indesign": {
+      "output": ".vespasian/plans",
+      "namespace": "vsp"
+    }
+  },
+  "site": {
+    "siteId": "",
+    "accountId": ""
+  }
+}

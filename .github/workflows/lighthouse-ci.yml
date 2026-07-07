@@ -1,0 +1,102 @@
+name: lighthouse-ci
+
+# Lighthouse budgets + Core Web Vitals against the PUBLISHED WIX SITE.
+#
+# Needs the `WIX_SITE_URL` repository VARIABLE (Settings → Secrets and
+# variables → Actions → Variables) pointing at the published site. When it is
+# not configured — forks, fresh clones, pre-first-publish — the workflow
+# skips with a clear notice instead of failing. Because it audits a live
+# deployed site rather than the PR's code, it runs on main pushes, a weekly
+# cron, and manual dispatch — not as a fork-PR gate.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tests/lighthouse/**"
+      - "lighthouserc.json"
+      - ".github/workflows/lighthouse-ci.yml"
+  schedule:
+    - cron: '30 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+
+concurrency:
+  group: lighthouse-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lighthouse:
+    name: Budgets + Core Web Vitals
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check WIX_SITE_URL is configured
+        id: gate
+        env:
+          WIX_SITE_URL: ${{ vars.WIX_SITE_URL }}
+        run: |
+          if [ -z "$WIX_SITE_URL" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Lighthouse skipped::Set the WIX_SITE_URL repository variable to the published Wix site to enable Lighthouse CI."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout
+        if: steps.gate.outputs.configured == 'true'
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        if: steps.gate.outputs.configured == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # pnpm via Corepack — pnpm/action-setup isn't on the allowed-actions list.
+      - name: Enable Corepack (pnpm)
+        if: steps.gate.outputs.configured == 'true'
+        run: corepack enable
+
+      - name: Restore pnpm store
+        if: steps.gate.outputs.configured == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+
+      - name: Install Node deps
+        if: steps.gate.outputs.configured == 'true'
+        run: pnpm install --frozen-lockfile
+
+      # lhci CLI (already a devDependency) instead of the treosh marketplace
+      # action, which isn't on this repo's allowed-actions list. collect →
+      # assert → upload so the *assert* step is the hard gate: it exits
+      # non-zero on any budget/category regression (see lighthouserc.json
+      # `ci.assert`). Tune thresholds in lighthouserc.json, never by
+      # re-softening this workflow.
+      - name: Collect Lighthouse results
+        if: steps.gate.outputs.configured == 'true'
+        env:
+          WIX_SITE_URL: ${{ vars.WIX_SITE_URL }}
+        run: pnpm exec lhci collect --config=./lighthouserc.json --url="${WIX_SITE_URL%/}/"
+
+      - name: Assert performance budgets (hard gate)
+        if: steps.gate.outputs.configured == 'true'
+        run: pnpm lighthouse:assert
+
+      # Upload runs even when the gate fails so reviewers get the shareable
+      # report URL on a red run. Best-effort: a storage hiccup must not mask
+      # the assert result, hence continue-on-error.
+      - name: Upload Lighthouse report
+        if: always() && steps.gate.outputs.configured == 'true'
+        continue-on-error: true
+        run: pnpm exec lhci upload --config=./lighthouserc.json
+
+      - name: Annotate failing budgets
+        if: always() && steps.gate.outputs.configured == 'true'
+        run: node tests/lighthouse/annotate-report.mjs .lighthouseci/

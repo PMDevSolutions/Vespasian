@@ -1,0 +1,35 @@
+name: commitlint
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  commitlint:
+    name: Lint PR Commits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # pnpm via Corepack + the repo's own @commitlint/cli, instead of the
+      # wagoid marketplace action, which isn't on the allowed-actions list.
+      - name: Enable Corepack (pnpm)
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint commits with commitlint
+        run: pnpm exec commitlint --config .commitlintrc.json --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}

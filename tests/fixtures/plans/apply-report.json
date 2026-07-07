@@ -1,0 +1,147 @@
+{
+  "planVersion": 1,
+  "site": {
+    "title": "Fixture Site",
+    "templateId": "11111111-2222-3333-4444-555555555555"
+  },
+  "sourceHash": "fixture-0000000000000000",
+  "resumeFrom": null,
+  "phases": [
+    {
+      "phase": "provision",
+      "status": "complete",
+      "steps": 2
+    },
+    {
+      "phase": "media",
+      "status": "complete",
+      "steps": 1
+    },
+    {
+      "phase": "editor",
+      "status": "complete",
+      "steps": 2
+    },
+    {
+      "phase": "code",
+      "status": "complete",
+      "steps": 1
+    },
+    {
+      "phase": "publish",
+      "status": "complete",
+      "steps": 1
+    }
+  ],
+  "steps": [
+    {
+      "id": "provision-1",
+      "op": "site.create",
+      "phase": "provision",
+      "method": "api",
+      "status": "ok",
+      "attempts": 1,
+      "output": {
+        "project": {
+          "siteId": "00000000-0000-4000-8000-000000000011",
+          "metaSiteId": "00000000-0000-4000-8000-000000000021",
+          "name": "dry-run-site"
+        }
+      }
+    },
+    {
+      "id": "provision-2",
+      "op": "site.assertStudio",
+      "phase": "provision",
+      "method": "api",
+      "status": "ok",
+      "attempts": 1,
+      "output": {
+        "editorType": "WIX_STUDIO",
+        "editorUrl": "https://editor.wix.com/studio/dry-run",
+        "previewUrl": "https://editor.wix.com/studio/dry-run/preview"
+      }
+    },
+    {
+      "id": "media-1",
+      "op": "media.upload",
+      "phase": "media",
+      "method": "api",
+      "status": "ok",
+      "attempts": 1,
+      "output": {
+        "id": "dryrun-file-4",
+        "operationStatus": "READY"
+      }
+    },
+    {
+      "id": "editor-1",
+      "op": "pages.create",
+      "phase": "editor",
+      "method": "playwright",
+      "status": "pending-agent",
+      "attempts": 1
+    },
+    {
+      "id": "editor-2",
+      "op": "canvas.composeSection",
+      "phase": "editor",
+      "method": "agent",
+      "status": "pending-agent",
+      "attempts": 1
+    },
+    {
+      "id": "code-1",
+      "op": "cli.writeGlobalCss",
+      "phase": "code",
+      "method": "cli",
+      "status": "ok",
+      "attempts": 1,
+      "output": {
+        "ok": true,
+        "path": "/Users/paul/Repos/vespasian/.vespasian/dryrun/site-repo/src/styles/global.css",
+        "staged": true
+      }
+    },
+    {
+      "id": "publish-1",
+      "op": "site.publish",
+      "phase": "publish",
+      "method": "api",
+      "status": "ok",
+      "attempts": 1,
+      "output": {}
+    }
+  ],
+  "pendingAgent": [
+    {
+      "stepId": "editor-1",
+      "op": "pages.create",
+      "phase": "editor",
+      "method": "playwright",
+      "input": {
+        "title": "Home"
+      },
+      "hint": "No editor driver attached — hand \"pages.create\" to the wix-site-builder agent (input in the BuildPlan step)."
+    },
+    {
+      "stepId": "editor-2",
+      "op": "canvas.composeSection",
+      "phase": "editor",
+      "method": "agent",
+      "input": {
+        "page": "Home",
+        "section": "hero"
+      },
+      "hint": "No editor driver attached — hand \"canvas.composeSection\" to the wix-site-builder agent (input in the BuildPlan step)."
+    }
+  ],
+  "fidelity": [
+    {
+      "code": "spacing-css-only",
+      "severity": "info",
+      "message": "Spacing scale lives in global.css custom properties (Wix has no spacing tokens)."
+    }
+  ],
+  "ok": true
+}

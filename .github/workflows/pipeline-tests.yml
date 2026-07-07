@@ -1,0 +1,120 @@
+name: Pipeline Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check-paths:
+    runs-on: ubuntu-latest
+    outputs:
+      should-test: ${{ steps.filter.outputs.scripts || steps.filter.outputs.tests }}
+      should-test-pipeline-pkg: ${{ steps.filter.outputs.pipeline-pkg }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            scripts:
+              - 'scripts/figma-wix/**'
+              - 'scripts/canva-wix/**'
+              - 'scripts/shared/**'
+            tests:
+              - 'tests/**'
+            pipeline-pkg:
+              - 'packages/pipeline/**'
+              - 'packages/wix-driver/**'
+              - 'pnpm-workspace.yaml'
+              - 'bin/vespasian.mjs'
+              - 'scripts/indesign-wix/**'
+              - 'tests/fixtures/indesign/**'
+              - '.github/workflows/pipeline-tests.yml'
+
+  test:
+    needs: check-paths
+    if: needs.check-paths.outputs.should-test == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install jq
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq jq
+
+      - name: Make scripts executable
+        run: |
+          chmod +x scripts/figma-wix/*.sh
+          chmod +x scripts/canva-wix/*.sh
+          chmod +x scripts/shared/*.sh
+
+      - name: Run Figma-to-Wix pipeline tests
+        run: ./tests/libs/bats-core/bin/bats tests/figma-wix/
+
+      - name: Run Canva-to-Wix pipeline tests
+        run: ./tests/libs/bats-core/bin/bats tests/canva-wix/
+
+      - name: Run shared validator tests
+        run: ./tests/libs/bats-core/bin/bats tests/shared/ tests/unit/
+
+  test-pipeline-pkg:
+    needs: check-paths
+    if: needs.check-paths.outputs.should-test-pipeline-pkg == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # pnpm via Corepack (bundled with Node) — the pnpm/action-setup
+      # marketplace action isn't on this repo's allowed-actions list.
+      - name: Enable Corepack (pnpm)
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install workspace dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run @vespasian/pipeline tests
+        run: pnpm --filter @vespasian/pipeline test
+
+      - name: Run @vespasian/wix-driver tests
+        run: pnpm --filter @vespasian/wix-driver test
+
+      - name: Run InDesign end-to-end smoke test (fixture .idml → BuildPlan)
+        run: node scripts/indesign-wix/smoke-test.mjs
+
+      - name: Run InDesign fixture tests (.idml + PDF → IR + tokens)
+        run: node --test tests/fixtures/indesign/fixtures.test.mjs
+
+  test-status:
+    runs-on: ubuntu-latest
+    needs: [check-paths, test, test-pipeline-pkg]
+    if: always()
+    name: Pipeline Tests Status
+    steps:
+      - name: Report status
+        run: |
+          if [ "${{ needs.check-paths.outputs.should-test }}" != "true" ] && [ "${{ needs.check-paths.outputs.should-test-pipeline-pkg }}" != "true" ]; then
+            echo "No pipeline/test changes detected — skipping tests"
+            exit 0
+          fi
+          fail=0
+          if [ "${{ needs.check-paths.outputs.should-test }}" = "true" ] && [ "${{ needs.test.result }}" != "success" ]; then
+            echo "bats pipeline tests failed"
+            fail=1
+          fi
+          if [ "${{ needs.check-paths.outputs.should-test-pipeline-pkg }}" = "true" ] && [ "${{ needs.test-pipeline-pkg.result }}" != "success" ]; then
+            echo "workspace package tests failed"
+            fail=1
+          fi
+          exit $fail

@@ -1,0 +1,17 @@
+{
+	"planVersion": 1,
+	"site": { "title": "Fixture Site" },
+	"steps": [
+		{
+			"id": "provision-1",
+			"op": "site.create",
+			"method": "ftp",
+			"phase": "provision",
+			"input": {},
+			"idempotencyKey": "site.create:fixture",
+			"onFail": "retry"
+		}
+	],
+	"fidelity": [],
+	"meta": { "sourceHash": "fixture-0000000000000000" }
+}

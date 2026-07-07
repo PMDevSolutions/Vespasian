@@ -1,0 +1,22 @@
+{
+	"name": "@vespasian/wix-driver",
+	"version": "0.1.0",
+	"private": true,
+	"description": "Wix output layer for Vespasian: typed REST client, token→Wix translator, BuildPlan compiler, phase-ordered executor, Playwright editor driver, and QA/fidelity reporting.",
+	"type": "module",
+	"exports": {
+		".": "./src/index.js"
+	},
+	"scripts": {
+		"test": "node --test"
+	},
+	"dependencies": {
+		"zod": "^3.23.8"
+	},
+	"devDependencies": {
+		"playwright": "1.60.0"
+	},
+	"engines": {
+		"node": ">=20.0.0"
+	}
+}

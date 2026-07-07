@@ -1,0 +1,33 @@
+{
+	"palette": [
+		{ "slug": "primary", "color": "#1a3f6f", "name": "Primary" },
+		{ "slug": "secondary", "color": "#e8491d", "name": "Secondary" },
+		{ "slug": "accent", "color": "#f4a261", "name": "Accent" },
+		{ "slug": "surface", "color": "#f7f7f8", "name": "Surface" },
+		{ "slug": "contrast", "color": "#101014", "name": "Contrast" },
+		{ "slug": "muted", "color": "#6b7280", "name": "Muted" },
+		{ "slug": "success", "color": "#15803d", "name": "Success" },
+		{ "slug": "warning", "color": "#b45309", "name": "Warning" }
+	],
+	"fontFamilies": [
+		{ "slug": "playfair-display", "fontFamily": "Playfair Display", "name": "Playfair Display" },
+		{ "slug": "inter", "fontFamily": "Inter", "name": "Inter" }
+	],
+	"fontSizes": [
+		{ "slug": "small", "size": "14px", "name": "Small" },
+		{ "slug": "base", "size": "16px", "name": "Base" },
+		{ "slug": "medium", "size": "18px", "name": "Medium" },
+		{ "slug": "large", "size": "24px", "name": "Large" },
+		{ "slug": "x-large", "size": "32px", "name": "X-Large" },
+		{ "slug": "xx-large", "size": "48px", "name": "XX-Large" }
+	],
+	"spacingSizes": [
+		{ "slug": "20", "size": "4px", "name": "Space 20" },
+		{ "slug": "30", "size": "8px", "name": "Space 30" },
+		{ "slug": "40", "size": "16px", "name": "Space 40" },
+		{ "slug": "50", "size": "24px", "name": "Space 50" },
+		{ "slug": "60", "size": "32px", "name": "Space 60" },
+		{ "slug": "70", "size": "48px", "name": "Space 70" },
+		{ "slug": "80", "size": "64px", "name": "Space 80" }
+	]
+}

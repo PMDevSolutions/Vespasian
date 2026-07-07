@@ -1,0 +1,113 @@
+name: Site Validation
+
+# The PR gate for the Wix output layer: compiles a BuildPlan from the
+# committed fixtures and executes it end-to-end with dry-run recording
+# transports (VESPASIAN_DRY_RUN). No secrets, no network, no browsers —
+# safe on fork PRs. Complements pipeline-tests (unit lanes) by proving the
+# fixture → tokens → plan → apply chain as one piece.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-paths:
+    runs-on: ubuntu-latest
+    outputs:
+      should-validate: ${{ steps.filter.outputs.site }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            site:
+              - 'packages/wix-driver/**'
+              - 'packages/pipeline/**'
+              - 'bin/vespasian.mjs'
+              - 'scripts/shared/**'
+              - 'scripts/canva-wix/**'
+              - 'tests/fixtures/plans/**'
+              - 'tests/fixtures/canva/**'
+              - 'tests/canva-e2e/**'
+              - '.github/workflows/site-validation.yml'
+
+  validate:
+    needs: check-paths
+    if: needs.check-paths.outputs.should-validate == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # pnpm via Corepack — pnpm/action-setup isn't on the allowed-actions list.
+      - name: Enable Corepack (pnpm)
+        run: corepack enable
+
+      - name: Restore pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+
+      - name: Install Node deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Install jq
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq jq
+
+      - name: Lint the committed BuildPlan fixtures
+        run: |
+          chmod +x scripts/shared/plan-lint.sh
+          bash scripts/shared/plan-lint.sh tests/fixtures/plans/valid-plan.json
+          # Known-bad fixtures must FAIL the lint (guards the linter itself)
+          if bash scripts/shared/plan-lint.sh tests/fixtures/plans/invalid-plan-bad-method.json 2>/dev/null; then
+            echo "::error::plan-lint accepted invalid-plan-bad-method.json"
+            exit 1
+          fi
+          if bash scripts/shared/plan-lint.sh tests/fixtures/plans/invalid-plan-out-of-order.json 2>/dev/null; then
+            echo "::error::plan-lint accepted invalid-plan-out-of-order.json"
+            exit 1
+          fi
+
+      # Fixture → tokens → BuildPlan compile → dry-run apply (the real gate).
+      - name: Compile + dry-run apply from fixtures
+        env:
+          VESPASIAN_DRY_RUN: "1"
+        run: pnpm test:canva-e2e
+
+  # Stable required check (mirrors pipeline-tests.yml's status pattern).
+  validation-status:
+    runs-on: ubuntu-latest
+    needs: [check-paths, validate]
+    if: always()
+    name: Validate Wix Build
+    steps:
+      - name: Report status
+        run: |
+          if [ "${{ needs.check-paths.outputs.should-validate }}" != "true" ]; then
+            echo "No output-layer changes detected — skipping validation"
+            exit 0
+          fi
+          if [ "${{ needs.validate.result }}" = "success" ]; then
+            echo "Site validation passed"
+            exit 0
+          fi
+          echo "Site validation failed"
+          exit 1

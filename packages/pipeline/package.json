@@ -1,0 +1,31 @@
+{
+  "name": "@vespasian/pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Design-ingestion pipeline: InDesign (IDML/PDF) sources into a neutral design IR, content model, design tokens, and staged asset bundles for the Vespasian Wix driver.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./indesign": "./src/indesign/index.js"
+  },
+  "bin": {
+    "vespasian-ingest": "./bin/ingest.mjs",
+    "vespasian-parse-idml": "./bin/parse-idml.mjs",
+    "vespasian-parse-pdf": "./bin/parse-pdf.mjs",
+    "vespasian-stage-assets": "./bin/stage-assets.mjs",
+    "vespasian-map-tokens": "./bin/map-tokens.mjs"
+  },
+  "scripts": {
+    "test": "node --test",
+    "stage-assets": "node bin/stage-assets.mjs"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.7.0",
+    "fflate": "^0.8.2",
+    "pdfjs-dist": "^4.10.38",
+    "zod": "^3.23.8"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

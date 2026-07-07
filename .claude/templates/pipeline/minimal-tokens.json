@@ -1,0 +1,34 @@
+{
+  "palette": [
+    { "slug": "primary", "color": "#34495e", "name": "Primary" },
+    { "slug": "accent", "color": "#16a085", "name": "Accent" },
+    { "slug": "background", "color": "#fdfdfd", "name": "Background" },
+    { "slug": "black", "color": "#0c0c0c", "name": "Black" },
+    { "slug": "white", "color": "#ffffff", "name": "White" }
+  ],
+  "fontFamilies": [
+    { "slug": "body", "name": "Body", "fontFamily": "Inter, system-ui, sans-serif" },
+    { "slug": "heading", "name": "Heading", "fontFamily": "Questrial, Georgia, serif" }
+  ],
+  "fontSizes": [
+    { "slug": "small", "size": "14px", "name": "Small" },
+    { "slug": "base", "size": "16px", "name": "Base" },
+    { "slug": "large", "size": "20px", "name": "Large" },
+    { "slug": "x-large", "size": "24px", "name": "Extra Large" },
+    { "slug": "2x-large", "size": "32px", "name": "2X Large" },
+    { "slug": "3x-large", "size": "40px", "name": "3X Large" },
+    { "slug": "4x-large", "size": "56px", "name": "4X Large" }
+  ],
+  "spacingSizes": [
+    { "slug": "20", "size": "4px", "name": "1" },
+    { "slug": "30", "size": "8px", "name": "2" },
+    { "slug": "40", "size": "16px", "name": "3" },
+    { "slug": "50", "size": "24px", "name": "4" },
+    { "slug": "60", "size": "32px", "name": "5" },
+    { "slug": "70", "size": "40px", "name": "6" },
+    { "slug": "80", "size": "48px", "name": "7" },
+    { "slug": "90", "size": "64px", "name": "8" },
+    { "slug": "100", "size": "80px", "name": "9" },
+    { "slug": "110", "size": "112px", "name": "10" }
+  ]
+}

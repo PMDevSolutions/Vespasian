@@ -1,0 +1,41 @@
+{
+  "irVersion": 1,
+  "meta": { "name": "Minimal Brochure" },
+  "dpi": 96,
+  "swatches": [
+    { "id": "sw-brand", "name": "Brand Blue", "color": { "hex": "#1f6feb", "space": "RGB", "components": [31, 111, 235] } },
+    { "id": "sw-ink", "name": "Ink", "color": { "hex": "#22223b", "space": "RGB", "components": [34, 34, 59] } }
+  ],
+  "fonts": [
+    { "id": "font-1", "family": "Helvetica Neue", "style": "Regular" }
+  ],
+  "styles": [
+    { "id": "st-h1", "name": "Heading 1", "kind": "paragraph", "fontSize": 32, "fontRef": "font-1", "fillColorRef": "sw-brand", "properties": {} },
+    { "id": "st-body", "name": "Body", "kind": "paragraph", "fontSize": 16, "fontRef": "font-1", "fillColorRef": "sw-ink", "properties": {} }
+  ],
+  "stories": [
+    {
+      "id": "story-1",
+      "source": "Stories/Story_u1.xml",
+      "runs": [
+        { "text": "Welcome to Minimal", "paragraphStyleRef": "st-h1" },
+        { "text": "A tiny brochure used by the CLI smoke tests.", "paragraphStyleRef": "st-body" }
+      ]
+    }
+  ],
+  "spreads": [
+    {
+      "id": "spread-1",
+      "source": "Spreads/Spread_u1.xml",
+      "pages": [
+        { "id": "page-1", "bounds": { "x": 0, "y": 0, "width": 816, "height": 1056 } }
+      ],
+      "frames": [
+        { "kind": "text", "id": "tf-1", "bounds": { "x": 48, "y": 48, "width": 720, "height": 240 }, "storyRef": "story-1" },
+        { "kind": "image", "id": "if-1", "bounds": { "x": 48, "y": 320, "width": 720, "height": 480 }, "href": "file:Links/hero.jpg", "embedded": false }
+      ]
+    }
+  ],
+  "masterSpreads": [],
+  "warnings": []
+}

@@ -1,0 +1,47 @@
+# Example staging deployment configuration (a staging Wix site).
+#
+# Copy this file to `staging.yml` and fill in real values. The file is then
+# read by `scripts/wix-deployment/publish.sh --env staging`.
+#
+# Every key is parsed into DEPLOY_CFG_<UPPER_PATH> at runtime, e.g.
+#   account.api_key_env    →  DEPLOY_CFG_ACCOUNT_API_KEY_ENV
+#   notify.slack_webhook   →  DEPLOY_CFG_NOTIFY_SLACK_WEBHOOK
+
+# Target Wix site GUID (find it via `vespasian site list`).
+site_id: 00000000-0000-0000-0000-000000000000
+
+# Optional: cached metaSiteId used to build dashboard/editor URLs.
+metasite_id: ""
+
+# ─── Credentials (env-var references — never the values) ────────────────────
+# The named variables are resolved from .env / the shell at runtime.
+account:
+  api_key_env: WIX_API_KEY
+  account_id_env: WIX_ACCOUNT_ID
+
+# ─── Operation channels ──────────────────────────────────────────────────────
+# api    - REST calls against www.wixapis.com (publish, media, data, embeds)
+# editor - consent-gated Playwright editor automation (pages, theme panels)
+# Staging can allow both; keep the editor channel off anywhere you have not
+# run `vespasian login --editor` and accepted the consent prompt.
+channels:
+  - api
+  - editor
+
+# ─── Publish gate ─────────────────────────────────────────────────────────────
+publish:
+  # Run scripts/wix-deployment/pre-publish-checks.sh before publishing.
+  require_checks: true
+  # Staging: allow publishing without a passing FidelityReport.
+  require_qa_pass: false
+  # Fall back to a Playwright-driven Publish click if the API publish fails.
+  allow_editor_fallback: false
+
+# ─── Notifications ────────────────────────────────────────────────────────────
+# Each channel is optional. Empty/missing values are skipped.
+notify:
+  slack_webhook: ""
+  discord_webhook: ""
+  webhook_url: ""
+  email_to: ""
+  email_from: ""
