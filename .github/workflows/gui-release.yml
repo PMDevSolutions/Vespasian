@@ -38,7 +38,12 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        # side-effects-cache=false: the Linux runner shares the lockfile-keyed
+        # pnpm store cache with gui.yml, whose lint/typecheck job installs with
+        # ELECTRON_SKIP_BINARY_DOWNLOAD=1. Replaying that recorded postinstall
+        # would yield an Electron install with no binary, breaking the smoke
+        # test and packaging. Force postinstalls to really run.
+        run: pnpm install --frozen-lockfile --config.side-effects-cache=false
 
       - name: Install Electron runtime libraries + Xvfb (Linux)
         if: runner.os == 'Linux'
