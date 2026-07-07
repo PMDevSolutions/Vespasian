@@ -1,8 +1,8 @@
 {
   "name": "@vespasian/gui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Desktop GUI for Vespasian \u2014 a thin orchestration shell over the init wizard, the Wix site lifecycle (connect, apply, publish), the design-to-Wix pipelines, and visual QA. Invokes the existing scripts/pipelines; does not reimplement them.",
+  "description": "Desktop GUI for Vespasian — a thin orchestration shell over the init wizard, the Wix site lifecycle (connect, apply, publish), the design-to-Wix pipelines, and visual QA. Invokes the existing scripts/pipelines; does not reimplement them.",
   "license": "MIT",
   "author": "PMDevSolutions",
   "main": "./out/main/index.js",
