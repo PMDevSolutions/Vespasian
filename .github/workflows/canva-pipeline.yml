@@ -25,7 +25,7 @@ jobs:
     outputs:
       should-run: ${{ steps.filter.outputs.canva }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -45,7 +45,7 @@ jobs:
     name: Fixture conversion + plan compile + dry-run apply
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node 20
         uses: actions/setup-node@v4
