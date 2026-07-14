@@ -16,7 +16,7 @@ jobs:
       should-test: ${{ steps.filter.outputs.scripts || steps.filter.outputs.tests }}
       should-test-pipeline-pkg: ${{ steps.filter.outputs.pipeline-pkg }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -43,7 +43,7 @@ jobs:
 
     steps:
       - name: Checkout with submodules
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # pnpm via Corepack (bundled with Node) — the pnpm/action-setup
       # marketplace action isn't on this repo's allowed-actions list.
