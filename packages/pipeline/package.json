@@ -22,7 +22,7 @@
   "dependencies": {
     "fast-xml-parser": "^5.9.3",
     "fflate": "^0.8.3",
-    "pdfjs-dist": "^4.10.38",
+    "pdfjs-dist": "^6.0.227",
     "zod": "^3.25.76"
   },
   "engines": {
