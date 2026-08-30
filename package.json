@@ -56,9 +56,9 @@
     "@clack/prompts": "^0.7.0",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "@lhci/cli": "^0.14.0",
+    "@lhci/cli": "^0.15.1",
     "pixelmatch": "^7.2.0",
-    "playwright": "1.61.1",
+    "playwright": "1.62.1",
     "pngjs": "^7.0.0"
   },
   "pnpm": {
