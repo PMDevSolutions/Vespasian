@@ -1,6 +1,6 @@
 {
   "name": "@vespasian/gui",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "Desktop GUI for Vespasian — a thin orchestration shell over the init wizard, the Wix site lifecycle (connect, apply, publish), the design-to-Wix pipelines, and visual QA. Invokes the existing scripts/pipelines; does not reimplement them.",
   "license": "MIT",
