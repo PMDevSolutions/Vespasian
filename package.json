@@ -1,6 +1,6 @@
 {
   "name": "vespasian",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "Claude Code-integrated Wix site builder — design in (Figma · Canva · InDesign), live Wix site out. The repository version is tracked in git tags + .release-please-manifest.json (source of truth) and mirrored into the version field above by release-please.",
   "license": "MIT",
