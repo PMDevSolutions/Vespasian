@@ -28,7 +28,7 @@ jobs:
   init-wizard:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # pnpm via Corepack — pnpm/action-setup isn't on the allowed-actions list.
       - name: Enable Corepack (pnpm)
