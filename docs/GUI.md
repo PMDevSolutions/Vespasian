@@ -51,7 +51,7 @@ interactive flows like `vespasian login --editor` and live `claude` sessions).
 
 | Screen | What it does | Wraps |
 | --- | --- | --- |
-| **Prerequisites** | Runs the prereq check and shows a pass/fail/warn checklist with actionable guidance (Git, Node 20+, pnpm 9, Claude Code, optional Wix CLI/Playwright, Wix credentials in `.env`). Warnings — e.g. missing credentials — are shown but never block. | `scripts/check-prerequisites.sh` |
+| **Prerequisites** | Runs the prereq check and shows a pass/fail/warn checklist with actionable guidance (Git, Node 22.13+, pnpm 9, Claude Code, optional Wix CLI/Playwright, Wix credentials in `.env`). Warnings — e.g. missing credentials — are shown but never block. | `scripts/check-prerequisites.sh` |
 | **Setup wizard** | Collects slug, title, optional Wix API key + account id, and the target-site choice (skip / create a Studio site / connect an existing id), writes `.env`, provisions or connects the site, and verifies the result. Inputs are validated via `resolveDefaults` before anything runs. | `scripts/init/` `resolveDefaults()` + `apply()` (in-process) |
 | **Wix site** | Shows the connection state read from `.env` + `.vespasian/` (API key/account set? target site? editor session captured? dry-run?), lists the account's sites, connects a site id (writes `WIX_SITE_ID`), applies a compiled BuildPlan picked from `.vespasian/plans/`, and publishes. Failed runs get actionable hints (401/403 key problems, 429 backoff, session expiry) linking to [TROUBLESHOOTING.md](TROUBLESHOOTING.md). Editor login is intentionally a terminal step (see below). | `vespasian site list\|use` / `vespasian apply` / `vespasian publish` |
 | **Convert design** | Pick Figma / Canva / InDesign, provide the input (Figma URL with validation + Dev Mode note; native folder picker for Canva; native `.idml`/PDF picker for InDesign), launch, and stream progress. Figma/Canva run as autonomous headless Claude Code workflows (compile plan → apply → QA); InDesign runs the deterministic CLI and, on success, points at the compiled plan to apply from the **Wix site** tab. Failures link to the troubleshooting docs. | `claude -p` (Figma/Canva) / `vespasian pipeline indesign` |
@@ -150,7 +150,7 @@ disk, driving setup → Wix site → conversion → QA through the UI.
 
 ## Requirements
 
-Running the GUI requires the same tools Vespasian itself needs — Git, Node 20+, pnpm 9,
+Running the GUI requires the same tools Vespasian itself needs — Git, Node 22.13+, pnpm 9,
 Claude Code, and (for live runs) Wix credentials in `.env` — which is exactly what the
 **Prerequisites** screen detects (by running `scripts/check-prerequisites.sh` and rendering
 the result with actionable guidance). Everything works credential-free under

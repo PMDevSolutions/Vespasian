@@ -33,7 +33,7 @@ write, no page composition).
 
 ## Prerequisites
 
-- **Node.js 20+** with `npx` (for the Playwright MCP)
+- **Node.js 22.13+** with `npx` (for the Playwright MCP)
 - **Figma Desktop** with Dev Mode enabled (for `figma-desktop` only)
 - Playwright browsers: `./scripts/setup-playwright.sh` (or `pnpm playwright:install`)
 

@@ -20,12 +20,12 @@
     "stage-assets": "node bin/stage-assets.mjs"
   },
   "dependencies": {
-    "fast-xml-parser": "^5.9.3",
+    "fast-xml-parser": "^5.11.2",
     "fflate": "^0.8.3",
-    "pdfjs-dist": "^4.10.38",
-    "zod": "^3.25.76"
+    "pdfjs-dist": "^6.3.289",
+    "zod": "^4.6.7"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.13.0"
   }
 }

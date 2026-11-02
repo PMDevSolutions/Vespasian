@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
 
       # pnpm via Corepack — pnpm/action-setup isn't on the allowed-actions list.
       - name: Enable Corepack (pnpm)
@@ -47,7 +47,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload security report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: security-report
           path: .claude/security-reports/

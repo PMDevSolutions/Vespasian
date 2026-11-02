@@ -4,20 +4,6 @@
 
 let pdfjsPromise;
 
-// pdfjs-dist 4.x calls Promise.withResolvers, which only exists on Node 22+.
-// This package supports Node >=20, so polyfill it (guarded) before pdfjs loads.
-if (typeof Promise.withResolvers !== 'function') {
-	Promise.withResolvers = function withResolvers() {
-		let resolve;
-		let reject;
-		const promise = new Promise((res, rej) => {
-			resolve = res;
-			reject = rej;
-		});
-		return { promise, resolve, reject };
-	};
-}
-
 /**
  * Resolve the pdfjs module once and cache it.
  * @returns {Promise<typeof import('pdfjs-dist/legacy/build/pdf.mjs')>}
