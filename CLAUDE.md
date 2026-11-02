@@ -78,7 +78,7 @@ VESPASIAN_DRY_RUN          # '1' turns both planes into no-op recording transpor
 ### Setup
 
 ```bash
-pnpm install                                    # workspace deps (pnpm 9.x, Node ≥ 20)
+pnpm install                                    # workspace deps (pnpm 9.x, Node ≥ 22.13)
 pnpm run init                                   # interactive setup wizard: writes .env
 node bin/vespasian.mjs --help                   # the `vespasian` CLI entry point
 ```
@@ -320,5 +320,5 @@ node scripts/visual-diff.js [actual] [expected]  # pixel-level screenshot compar
 
 ---
 
-**Last Updated:** 2026-07-06
+**Last Updated:** 2026-11-02
 **Architecture Status:** ✅ Wix Studio output layer (API-first, consent-gated editor automation, dry-run CI)

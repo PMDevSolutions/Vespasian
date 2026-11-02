@@ -25,7 +25,7 @@ Do **not** use this for live Figma or Canva sources — use `figma-to-wix-autono
 
 - **An exported `.idml` (strongly preferred).** In InDesign: `File → Export → Format: InDesign Markup (IDML)`. IDML preserves stories, frames, styles, swatches, and master spreads.
 - **Or a PDF fallback.** PDF reconstruction is lossy — text is rebuilt from glyph runs, styles are synthesized from font sizes, and every approximation is recorded as a fidelity warning. Use only when no `.idml` is available.
-- **Node 20+** and the workspace installed (`pnpm install`).
+- **Node 22.13+** and the workspace installed (`pnpm install`).
 - **Image bytes (optional).** Point `--asset-dir` at the IDML package's `Links/` folder to stage real image bytes; the media phase uploads them to the Wix Media Manager.
 - **For a real apply:** `WIX_API_KEY` + `WIX_ACCOUNT_ID` in `.env`; editor steps additionally need `vespasian login --editor`. Without credentials, everything up to and including `apply --dry-run` works offline.
 

@@ -4,7 +4,7 @@
 REQUIRED SOFTWARE
 -----------------
 [PASS] Git 2.43.0 (minimum: 2.30.0)
-[PASS] Node.js 22.0.0 (minimum: 20.0.0)
+[PASS] Node.js 22.0.0 (minimum: 22.13.0)
 [FAIL] pnpm not installed
        Install: corepack enable && corepack prepare pnpm@9.15.0 --activate
 [PASS] Claude Code 1.0.0

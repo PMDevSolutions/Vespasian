@@ -7,7 +7,7 @@ From zero to a design applied to a live Wix Studio site.
 Full details and per-OS installs: [PREREQUISITES.md](PREREQUISITES.md). Auto-check everything with
 `./scripts/check-prerequisites.sh`.
 
-- [ ] **Node.js 20+** and **pnpm 9.x** (`corepack enable`)
+- [ ] **Node.js 22.13+** and **pnpm 9.x** (`corepack enable`)
 - [ ] **Git**
 - [ ] **Claude Code** (`npm install -g @anthropic-ai/claude-code`)
 - [ ] **A Wix account** with a **Studio workspace** ([wix.com/studio](https://www.wix.com/studio))

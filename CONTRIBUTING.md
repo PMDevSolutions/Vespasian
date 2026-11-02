@@ -20,7 +20,7 @@ Before you begin, please review the following resources:
 ```
 git clone https://github.com/PMDevSolutions/Vespasian.git
 cd Vespasian
-pnpm install                       # pnpm 9.x, Node ≥ 20
+pnpm install                       # pnpm 9.x, Node ≥ 22.13
 git submodule update --init        # bats shell-test libraries
 ```
 
@@ -114,7 +114,7 @@ rules, and overrides (e.g. the `Release-As:` footer).
 
 ## Coding Standards
 
-- **Node ≥ 20, ESM** (`"type": "module"`), pnpm 9.x workspace
+- **Node ≥ 22.13, ESM** (`"type": "module"`), pnpm 9.x workspace
 - **No new runtime dependencies** — the Wix REST client is plain `fetch`; prefer the existing deps (zod, playwright, pixelmatch, pngjs, fflate, fast-xml-parser)
 - **Validate at the boundaries** — external input (IR, BuildPlans, API responses) goes through zod schemas
 - **Every operation honors `VESPASIAN_DRY_RUN=1`** — new transports and scripts must support the dry-run recorders; no test may make a real network call
