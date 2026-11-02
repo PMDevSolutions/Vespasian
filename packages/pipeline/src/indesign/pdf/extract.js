@@ -11,7 +11,7 @@
 // Coordinates are converted from PDF's bottom-left origin to a top-left origin
 // (points). The orchestrator scales points → px.
 
-import { rgbToHex, grayToHex, cmykToHex } from './color.js';
+import { rgbToHex, grayToHex, cmykToHex, hexToRgb } from './color.js';
 
 const SUBSET_PREFIX = /^[A-Z]{6}\+/;
 
@@ -51,6 +51,65 @@ function parseFontName(psName, fontObj) {
 	// "Times-Roman" reads better as family Times, style Regular for web mapping.
 	if (style === 'Roman') style = 'Regular';
 	return { family: family || clean, style };
+}
+
+/**
+ * Normalize a fill-color operator into the parser's hex + IR components.
+ *
+ * pdfjs >= 5 pre-converts every fill color space in its evaluator and emits
+ * setFillRGBColor with a single "#rrggbb" string; pdfjs 4 emitted numeric
+ * channels (RGB 0..255, gray 0..255, CMYK 0..1). Accept both shapes so the
+ * parser is not coupled to one pdfjs generation.
+ *
+ * @param {Record<string, number>} OPS
+ * @param {number} fn
+ * @param {any[]} args
+ * @returns {{ hex: string, color: { space: 'RGB' | 'CMYK', components: number[] } }}
+ */
+export function readFillColor(OPS, fn, args) {
+	if (typeof args?.[0] === 'string') {
+		const rgb = hexToRgb(args[0]);
+		return { hex: rgbToHex(rgb), color: { space: 'RGB', components: rgb } };
+	}
+	if (fn === OPS.setFillGray) {
+		return { hex: grayToHex(args[0]), color: { space: 'RGB', components: [args[0], args[0], args[0]] } };
+	}
+	if (fn === OPS.setFillCMYKColor) {
+		return {
+			hex: cmykToHex([args[0], args[1], args[2], args[3]]),
+			// pdfjs gives CMYK in 0..1; store 0..100 to match the IR range.
+			color: { space: 'CMYK', components: [args[0] * 100, args[1] * 100, args[2] * 100, args[3] * 100] },
+		};
+	}
+	return { hex: rgbToHex([args[0], args[1], args[2]]), color: { space: 'RGB', components: [args[0], args[1], args[2]] } };
+}
+
+/**
+ * Whether an operator paints a vector path (content the IR cannot represent).
+ *
+ * pdfjs 4 emitted the path (constructPath) and its painting op (fill, stroke,
+ * ...) as separate entries; pdfjs >= 5 folds the painting op into
+ * constructPath's first argument and no longer emits it on its own. Accept
+ * both shapes.
+ *
+ * @param {Record<string, number>} OPS
+ * @param {number} fn
+ * @param {any[]} args
+ * @returns {boolean}
+ */
+export function isVectorPaintOp(OPS, fn, args) {
+	const paintOps = [
+		OPS.fill,
+		OPS.eoFill,
+		OPS.stroke,
+		OPS.fillStroke,
+		OPS.eoFillStroke,
+		OPS.closeFillStroke,
+		OPS.closeEOFillStroke,
+		OPS.closeStroke,
+	];
+	if (paintOps.includes(fn)) return true;
+	return fn === OPS.constructPath && typeof args?.[0] === 'number' && paintOps.includes(args[0]);
 }
 
 function getImageObject(page, name) {
@@ -118,18 +177,13 @@ export async function extractPage(page, pdfjs) {
 				ctm = multiply(args, ctm);
 				break;
 			case OPS.setFillRGBColor:
-				fillHex = rgbToHex([args[0], args[1], args[2]]);
-				fillColor = { space: 'RGB', components: [args[0], args[1], args[2]] };
-				break;
 			case OPS.setFillGray:
-				fillHex = grayToHex(args[0]);
-				fillColor = { space: 'RGB', components: [args[0], args[0], args[0]] };
+			case OPS.setFillCMYKColor: {
+				const fill = readFillColor(OPS, fn, args);
+				fillHex = fill.hex;
+				fillColor = fill.color;
 				break;
-			case OPS.setFillCMYKColor:
-				fillHex = cmykToHex([args[0], args[1], args[2], args[3]]);
-				// pdfjs gives CMYK in 0..1; store 0..100 to match the IR range.
-				fillColor = { space: 'CMYK', components: [args[0] * 100, args[1] * 100, args[2] * 100, args[3] * 100] };
-				break;
+			}
 			case OPS.setFont:
 				currentSize = Math.abs(args[1]);
 				break;
@@ -149,7 +203,8 @@ export async function extractPage(page, pdfjs) {
 			case OPS.closeFillStroke:
 			case OPS.closeEOFillStroke:
 			case OPS.closeStroke:
-				hasVector = true;
+			case OPS.constructPath:
+				if (isVectorPaintOp(OPS, fn, args)) hasVector = true;
 				break;
 			case OPS.paintImageXObject:
 			case OPS.paintImageXObjectRepeat: {
