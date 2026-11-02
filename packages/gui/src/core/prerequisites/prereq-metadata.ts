@@ -7,7 +7,7 @@ import type { PrereqGuidance } from '../../shared/types/prerequisites';
  */
 export const PREREQ_GUIDANCE: Record<string, PrereqGuidance> = {
   git: { text: 'Install Git 2.30 or newer.', url: 'https://git-scm.com/downloads' },
-  node: { text: 'Install Node.js 20 or newer (nvm/fnm work fine).', url: 'https://nodejs.org/' },
+  node: { text: 'Install Node.js 22.13 or newer (nvm/fnm work fine).', url: 'https://nodejs.org/' },
   pnpm: {
     text: 'Install pnpm 9: corepack enable && corepack prepare pnpm@9.15.0 --activate',
     url: 'https://pnpm.io/installation',

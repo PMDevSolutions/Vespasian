@@ -22,15 +22,15 @@ git --version    # any modern version
 
 Install: [git-scm.com](https://git-scm.com/) · macOS: `xcode-select --install` or `brew install git` · Windows: Git for Windows (includes Git Bash, which the GUI uses to run `.sh` scripts) · Linux: `apt install git` / `dnf install git`.
 
-### 2. Node.js 20+
+### 2. Node.js 22.13+
 
-Runs the CLI, pipelines, Playwright, and the GUI.
+Runs the CLI, pipelines, Playwright, and the GUI. Node 20 reached end-of-life in April 2026 and is no longer supported.
 
 ```bash
-node -v          # must be ≥ v20
+node -v          # must be ≥ v22.13
 ```
 
-Install: [nodejs.org](https://nodejs.org/) LTS, or a version manager (`nvm install 20`, `fnm use 20`). The repo's `.npmrc` sets `engine-strict=true` — installs fail loudly on an old Node.
+Install: [nodejs.org](https://nodejs.org/) LTS, or a version manager (`nvm install 22`, `fnm use 22`). The repo's `.npmrc` sets `engine-strict=true` — installs fail loudly on an old Node.
 
 ### 3. pnpm 9.x
 
