@@ -36,9 +36,7 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          # 22, not 20: the test:init script uses `node --test "<glob>"`, and
-          # test-runner glob support landed in Node 21. (The init wizard has no
-          # Node-20 floor — only the pipeline package pins to 20.)
+          # Node 22 is the repo-wide floor (engines >=22.13.0; Node 20 is EOL).
           node-version: 22
           cache: pnpm
 

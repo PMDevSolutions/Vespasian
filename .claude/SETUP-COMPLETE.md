@@ -6,7 +6,7 @@ Work through this after cloning the repo and running `pnpm install`. When every 
 
 ## 1. Toolchain
 
-- [ ] Node.js ≥ 20 (`node --version`)
+- [ ] Node.js ≥ 22.13 (`node --version`)
 - [ ] pnpm 9.x (`pnpm --version`)
 - [ ] Workspace installed: `pnpm install`
 - [ ] Shell-test libraries fetched: `git submodule update --init` (vendored bats under `tests/libs/`)

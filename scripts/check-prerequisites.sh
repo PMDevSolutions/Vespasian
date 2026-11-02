@@ -3,7 +3,7 @@
 # Prerequisites Verification Script
 # Checks all required and optional tools for working with Vespasian.
 #
-# Required:  git, Node.js 20+, pnpm 9, Claude Code
+# Required:  git, Node.js 22.13+, pnpm 9, Claude Code
 # Optional:  GitHub CLI, jq, Wix CLI, Playwright browsers
 # Also warns (never fails) on missing WIX_* credentials in .env.
 #
@@ -39,7 +39,7 @@ WARNINGS=0
 
 # Minimum versions
 MIN_GIT_VERSION="2.30.0"
-MIN_NODE_VERSION="20.0.0"
+MIN_NODE_VERSION="22.13.0"
 MIN_PNPM_MAJOR=9
 MIN_GH_VERSION="2.0.0"
 MIN_RAM_GB=4

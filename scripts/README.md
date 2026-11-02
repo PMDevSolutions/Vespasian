@@ -85,7 +85,7 @@ See `wix-deployment/README.md`. Highlights:
 
 | Script | Purpose |
 |---|---|
-| `check-prerequisites.sh` | Node 20+, pnpm 9, Claude Code, git; optional gh/jq/Wix CLI/Playwright; warns on missing WIX_* creds |
+| `check-prerequisites.sh` | Node 22.13+, pnpm 9, Claude Code, git; optional gh/jq/Wix CLI/Playwright; warns on missing WIX_* creds |
 | `check-mcp.sh` | Figma (desktop + remote) and Playwright MCP reachability |
 | `validate-env.sh` | WIX_* format checks (GUIDs, placeholder detection) — never prints secret values |
 | `setup-playwright.sh` | Installs Playwright + chromium/firefox/webkit engines |
