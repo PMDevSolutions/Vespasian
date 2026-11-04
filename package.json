@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@clack/prompts": "^1.8.1",
-    "@commitlint/cli": "^19.8.1",
+    "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^19.8.1",
     "@lhci/cli": "^0.15.1",
     "pixelmatch": "^7.2.0",
