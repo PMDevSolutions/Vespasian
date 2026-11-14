@@ -176,6 +176,10 @@ Read these before you commit to the tool — they are platform constraints, not 
 | [Flavian](https://github.com/PMDevSolutions/Flavian) | Claude Code-integrated WordPress development template — Vespasian's sibling and ancestor |
 | [Nerva](https://github.com/PMDevSolutions/Nerva) | Claude Code-integrated API/backend framework: Hono, Cloudflare Workers, Drizzle |
 
+## Credits
+
+These agents in `.claude/agents/` are based on the agent definitions in [contains-studio/agents](https://github.com/contains-studio/agents) by Contains Studio, adapted for this project: `ai-engineer`, `analytics-reporter`, `api-tester`, `backend-architect`, `brand-guardian`, `content-creator`, `devops-automator`, `experiment-tracker`, `feedback-synthesizer`, `finance-tracker`, `frontend-developer`, `growth-hacker`, `infrastructure-maintainer`, `instagram-curator`, `joker`, `legal-compliance-checker`, `performance-benchmarker`, `project-shipper`, `reddit-community-builder`, `sprint-prioritizer`, `studio-coach`, `studio-producer`, `support-responder`, `test-results-analyzer`, `test-writer-fixer`, `tiktok-strategist`, `tool-evaluator`, `trend-researcher`, `twitter-engager`, `ui-designer`, `ux-researcher`, `visual-storyteller`, `workflow-optimizer`. Thanks to Contains Studio for sharing them.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
