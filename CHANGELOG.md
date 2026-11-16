@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/PMDevSolutions/Vespasian/compare/v0.2.1...v0.2.2) (2026-11-16)
+
+
+### Fixed
+
+* HAR check in performance-benchmarker; Figma notes for Claude Desktop ([#45](https://github.com/PMDevSolutions/Vespasian/issues/45)) ([442e0b6](https://github.com/PMDevSolutions/Vespasian/commit/442e0b63aee17ff187face7ea55fc7034de31767))
+
 ## [0.2.1](https://github.com/PMDevSolutions/Vespasian/compare/v0.2.0...v0.2.1) (2026-07-07)
 
 
