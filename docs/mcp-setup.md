@@ -57,12 +57,11 @@ Claude Desktop uses its own config file instead of `.mcp.json`:
 
 (Or: Claude Desktop → **Settings → Developer → Edit Config**.)
 
-> **⚠️ Verified vs. unverified config.** The **verified** Figma MCP configuration is the HTTP
-> transport in this project's `.mcp.json`: `figma-desktop` → `http://127.0.0.1:3845/mcp` and
-> `figma` → `https://mcp.figma.com/mcp`. If your Claude Desktop build supports HTTP/remote MCP
-> servers, use those URLs directly. The `@anthropic-ai/figma-mcp-server` stdio wrapper sometimes
-> shown in examples is **unverified** (the package name is not confirmed to exist) — substitute a
-> wrapper you have verified if your build needs stdio.
+> **Figma in Claude Desktop:** Figma publishes no npm package for its MCP server, so this file gets
+> no Figma entry. Add Figma's official connector instead (**Customize > Connectors**, Figma, server
+> `https://mcp.figma.com/mcp`). The desktop server (`http://127.0.0.1:3845/mcp`) is HTTP only, and
+> Claude Desktop's connectors connect from Anthropic's cloud, which cannot reach `127.0.0.1`, so use
+> it from Claude Code, where `.mcp.json` already configures it.
 
 A working stdio example for the Playwright server:
 
@@ -87,12 +86,13 @@ Options: drop `--headless` for a visible browser; `--browser chromium|firefox|we
 ## Verifying connections
 
 1. **Claude Code:** `./scripts/check-mcp.sh` checks configuration and connectivity.
-2. **Figma desktop:** open Figma Desktop, enable Dev Mode (`</>`), have a file open, then ask
-   Claude: *"Use the Figma MCP to check who I am"*. If it fails: check nothing blocks
+2. **Figma desktop (Claude Code):** open Figma Desktop and a file, switch to Dev Mode, click
+   **Enable desktop MCP server**, select a frame, then ask Claude: *"Use figma-desktop to get the
+   metadata for my selection"* (`whoami` is remote-only). If it fails: check nothing blocks
    `127.0.0.1:3845` (`curl -s http://127.0.0.1:3845/mcp`).
-3. **Figma remote:** first use triggers an OAuth prompt; for CI/headless use a
-   `FIGMA_PERSONAL_ACCESS_TOKEN` env var on the server entry (generate at Figma → Account
-   Settings → Personal access tokens).
+3. **Figma remote:** first use triggers a Figma sign-in (OAuth); ask *"Use Figma to check who I
+   am"*. Figma documents no personal-access-token option for this server, so it cannot run on a
+   fresh CI runner.
 4. **Playwright:** ask Claude: *"Use Playwright to navigate to https://example.com and take a
    screenshot"*. If the browser is missing: `npx playwright install chromium` (Linux may also
    need `npx playwright install-deps`).
@@ -102,7 +102,7 @@ Options: drop `--headless` for a visible browser; `--browser chromium|firefox|we
 | Server | Local dev | Remote/CI |
 |--------|-----------|-----------|
 | figma-desktop | ✅ preferred | ❌ needs the desktop GUI |
-| figma (remote) | fallback | ✅ primary (token auth) |
+| figma (remote) | fallback | only after an interactive OAuth sign-in (no token auth) |
 | playwright | ✅ headed for editor automation, headless for QA | ✅ `--headless` only; **never** editor automation in CI (dry-run instead) |
 
 More debugging: [MCP-TROUBLESHOOTING.md](MCP-TROUBLESHOOTING.md).
