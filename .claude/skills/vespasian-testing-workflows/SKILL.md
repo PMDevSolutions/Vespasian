@@ -126,7 +126,7 @@ CI (`site-validation.yml`) compiles a BuildPlan from fixtures and dry-run applie
 ## Coverage & Mutation Testing
 
 - Target: **80%+ line coverage** on `packages/pipeline` and `packages/wix-driver` (`--experimental-test-coverage`); the coverage-check hook reminds you after coverage runs.
-- Optional test-quality check: **StrykerJS** mutation testing (`npx stryker run`) — suggested by the mutation-test hook after green runs; not installed by default.
+- Optional test-quality check: **StrykerJS** mutation testing (`npx -p @stryker-mutator/core stryker run`) — suggested by the mutation-test hook after green runs; not installed by default.
 
 ## Common Mistakes
 
